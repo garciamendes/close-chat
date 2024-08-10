@@ -23,10 +23,12 @@ model Room {
 }
 
 model Message {
-  id            String  @id @default(uuid())
+  id            String   @id @default(uuid())
   content       String
-  reactionCount BigInt  @default(0) @map("reaction_count")
-  answered      Boolean @default(false)
+  reactionCount BigInt   @default(0) @map("reaction_count")
+  answered      Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   roomId String
   room   Room   @relation(fields: [roomId], references: [id])

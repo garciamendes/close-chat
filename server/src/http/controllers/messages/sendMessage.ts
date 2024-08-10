@@ -28,6 +28,6 @@ export const sendMessageToRoom = async (request: FastifyRequest, reply: FastifyR
     message.public(roomId, dataMessage)
     return reply.status(200).send()
   } catch (error) {
-    return reply.status(400).send({ error })
+    return reply.status(400).send(error)
   }
 }
