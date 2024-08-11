@@ -1,5 +1,9 @@
 type Message = {
-  content: string
+  kind: 'message_created',
+  value: {
+    id: string
+    content: string
+  }
 }
 
 type Subcriber = (message: Message) => void

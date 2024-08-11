@@ -1,9 +1,12 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, LoaderCircle } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { toast } from "sonner"
+import { createMessage } from "../http/createMessage"
+import { useState } from "react"
 
 export function CreateMessageForm() {
   const { roomId } = useParams()
+  const [isLoading, setIsLoading] = useState(false)
 
   if (!roomId) {
     throw new Error('Messages components must be used within room page')
@@ -16,11 +19,12 @@ export function CreateMessageForm() {
       return
     }
 
-    // try {
-    //   await createMessage({ message, roomId })
-    // } catch {
-    //   toast.error('Falha ao enviar pergunta, tente novamente!')
-    // }
+    setIsLoading(true)
+    createMessage({ message, roomId })
+      .catch(() => {
+        toast.error('Falha ao enviar pergunta, tente novamente!')
+      })
+      .finally(() => setIsLoading(false))
   }
 
   return (
@@ -38,11 +42,19 @@ export function CreateMessageForm() {
       />
 
       <button
-        type="submit"
-        className="bg-orange-400 text-orange-950 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-orange-500"
-      >
-        Criar pergunta
-        <ArrowRight className="size-4" />
+        disabled={isLoading}
+        type='submit'
+        className='bg-orange-400 overflow-hidden text-orange-950 px-3 py-1.5 gap-1.5 flex items-center justify-center rounded-lg font-medium text-sm transition-all duration-500  hover:opacity-[.9] w-28'>
+        {isLoading ? (
+          <>
+            <LoaderCircle className='animate-spin' size={20} />
+          </>
+        ) : (
+          <>
+            Criar sala
+            <ArrowRight size={20} />
+          </>
+        )}
       </button>
     </form>
   )

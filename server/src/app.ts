@@ -5,6 +5,7 @@ import { ZodError } from 'zod'
 import { env } from '@/envs'
 import { routesRooms } from './http/controllers/rooms/routes'
 import { routesMessages } from './http/controllers/messages/routes'
+import { routesWs } from './http/ws/routes'
 
 export const fastify = Fastify()
 
@@ -13,8 +14,10 @@ fastify.register(fastifyCors, {
 })
 fastify.register(fastifyWebsocket)
 
-fastify.register(routesRooms, { prefix: '/rooms' })
-fastify.register(routesMessages, { prefix: '/:roomId/messages' })
+fastify.register(routesRooms, { prefix: 'api/rooms' })
+fastify.register(routesMessages, { prefix: 'api/:roomId/messages' })
+
+fastify.register(routesWs, { prefix: 'api/:roomId' })
 
 fastify.setErrorHandler((err, _, reply) => {
   if (err instanceof ZodError) {

@@ -1,13 +1,28 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, LoaderCircle } from 'lucide-react'
 import LogoHomeSvg from '../assets/images/logo-home.svg'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { createRoom } from '../http/createRoom'
+import { useState } from 'react'
 
 export const CreateRoom = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleCreateRoom = (data: FormData) => {
     const theme = data.get('theme')?.toString()
-    navigate(`/room/${theme}`)
+
+    if (!theme) {
+      toast.error('Por favor, informe um nome para a sala')
+      return
+    }
+
+    setIsLoading(true)
+    createRoom({ theme })
+      .then((response) => {
+        navigate(`/room/${response.id}`)
+      })
+      .finally(() => setIsLoading(false))
   }
 
   return (
@@ -30,10 +45,20 @@ export const CreateRoom = () => {
             className='flex-1 text-sm bg-transparent mx-2 outline-none text-zinc-100 placeholder:text-zinc-500' />
 
           <button
+            disabled={isLoading}
             type='submit'
-            className='bg-orange-400 text-orange-950 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-orange-500'>
-            Criar sala
-            <ArrowRight className='size-4' />
+            data-loading={isLoading}
+            className='bg-orange-400 overflow-hidden whitespace-nowrap text-orange-950 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-all duration-500  hover:opacity-[.9] w-28 data-[loading=true]:w-11'>
+            {isLoading ? (
+              <>
+                <LoaderCircle className='animate-spin' size={20} />
+              </>
+            ) : (
+              <>
+                Criar sala
+                <ArrowRight size={20} />
+              </>
+            )}
           </button>
         </form>
       </div>

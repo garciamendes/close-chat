@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import amaLogo from '../assets/images/logo-home.svg'
-import { Share2 } from 'lucide-react'
+import { LoaderCircle, Share2 } from 'lucide-react'
 import { CreateMessageForm } from '../components/CreateMessageForm'
 import { Suspense } from 'react'
 import { Messages } from '../components/Messages'
@@ -19,6 +19,14 @@ export const Room = () => {
         .then(() => toast.success('Cópiado com sucesso!'))
         .catch(err => toast.error(err))
     }
+  }
+
+  const loader = () => {
+    return (
+      <div className='w-full flex items-center justify-center text-orange-500'>
+        <LoaderCircle className='animate-spin' size={30} />
+      </div>
+    )
   }
 
   return (
@@ -44,7 +52,7 @@ export const Room = () => {
 
       <CreateMessageForm />
 
-      <Suspense fallback={<p>Carregando...</p>}>
+      <Suspense fallback={loader()}>
         <Messages />
       </Suspense>
     </div>
