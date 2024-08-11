@@ -5,7 +5,7 @@ export interface IDeleteMessageReaction {
 
 export const removeMessageReaction = async ({ messageId, roomId }: IDeleteMessageReaction) => {
 
-  await fetch(`${import.meta.env.VITE_APP_API_URL}/api/${roomId}/messages/${messageId}`, {
+  await fetch(`${import.meta.env.VITE_APP_API_URL}/api/${roomId}/messages/react/${messageId}`, {
     method: 'DELETE',
   })
 }

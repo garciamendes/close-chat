@@ -5,7 +5,7 @@ export interface ICreateMessageReaction {
 
 export const createMessageReaction = async ({ messageId, roomId }: ICreateMessageReaction) => {
 
-  await fetch(`${import.meta.env.VITE_APP_API_URL}/api/${roomId}/messages/${messageId}`, {
+  await fetch(`${import.meta.env.VITE_APP_API_URL}/api/${roomId}/messages/react/${messageId}`, {
     method: 'PATCH',
   })
 }

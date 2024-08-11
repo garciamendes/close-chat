@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { createMessageReaction } from '../http/createMessageReaction'
 import { removeMessageReaction } from '../http/removeMessageReaction'
+import { useMessagesWebSockets } from '../hooks/useMessageWebSockets'
 
 interface MessageProps {
   id: string
@@ -25,6 +26,8 @@ export function Message({
   if (!roomId) {
     throw new Error('Messages components must be used within room page')
   }
+
+  useMessagesWebSockets({ roomId, messageId })
 
   async function createMessageReactionAction() {
     if (!roomId) {
